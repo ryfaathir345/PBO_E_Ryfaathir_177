@@ -5,30 +5,50 @@ import java.util.Scanner;
 
 public class LoginSystem {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("=== Sistem Login ===");
-        System.out.print("Username: "); String userInput = sc.nextLine();
-        System.out.print("Password: "); String passInput = sc.nextLine();
+        Scanner scanner = new Scanner(System.in);
 
-        User currentUser;
-        if ("admin".equals(userInput) || "fathir5899".equals(userInput)) {
-            // Asumsi dua akun admin: "admin" dengan pass "admin123", dan "fathir5899" dengan pass "admin1234"
-            if ("admin".equals(userInput)) {
-                currentUser = new Admin("admin", "admin123");
+        Admin admin = new Admin("Admin180", "202410370110177", "Admin177", "Password177");
+        Mahasiswa mahasiswa = new Mahasiswa("Ryfaathir", "202410370110177");
+
+        System.out.println("Selamat datang di Sistem Login");
+        System.out.println("1. Login sebagai Admin");
+        System.out.println("2. Login sebagai Mahasiswa");
+        System.out.print("Masukkan pilihan: ");
+        String pilihan = scanner.nextLine();
+
+        User user = null;
+
+        if (pilihan.equals("1")) {
+            System.out.print("Masukkan username: ");
+            String username = scanner.nextLine();
+            System.out.print("Masukkan password: ");
+            String password = scanner.nextLine();
+
+            if (admin.login(username, password)) {
+                user = admin;
             } else {
-                currentUser = new Admin("fathir5899", "admin1234");
+                System.out.println("Login Admin gagal!");
+            }
+        } else if (pilihan.equals("2")) {
+            System.out.print("Masukkan nama: ");
+            String nama = scanner.nextLine();
+            System.out.print("Masukkan NIM: ");
+            String nim = scanner.nextLine();
+
+            if (mahasiswa.login(nama, nim)) {
+                user = mahasiswa;
+            } else {
+                System.out.println("Login Mahasiswa gagal!");
             }
         } else {
-            currentUser = new Mahasiswa(userInput, passInput);
+            System.out.println("Pilihan tidak valid!");
         }
 
-        if (currentUser.login(userInput, passInput)) {
-            System.out.println("Login berhasil. Selamat datang, " + userInput + "!");
-            currentUser.displayMenu();
-        } else {
-            System.out.println("Login gagal. Periksa username atau password.");
+        if (user != null) {
+            user.displayInfo();
+            user.displayAppMenu();
         }
 
-        sc.close();
+        scanner.close();
     }
 }

@@ -1,50 +1,60 @@
 package com.praktikum.users;
 
 import com.praktikum.actions.AdminActions;
-
 import java.util.Scanner;
 
 public class Admin extends User implements AdminActions {
 
-    public Admin(String username, String password) {
-        super(username, password);
-    }
+    private String username;
+    private String password;
+    private String nama;
+    private String nim;
 
-    public boolean login(String inputUser, String inputPass) {
-        return inputUser.equals(this.username) &&
-                inputPass.equals(this.password);
+    public Admin(String nama, String nim, String username, String password) {
+        super(nama, nim);
+        this.username = username;
+        this.password = password;
+        this.nama = nama;
+        this.nim = nim;
     }
 
     @Override
-    public void displayMenu() {
-        Scanner input = new Scanner(System.in);
-        int pilihan = 0;
-
-        do{
-            System.out.println("=== Menu Mahasiswa ===");
-            System.out.println("1. Kelola Laporan Barang");
-            System.out.println("2. Kelola Data Mahasiswa");
-            System.out.println("0. Log Out");
-            System.out.println("Masukan Pilihan : ");
-            pilihan = input.nextInt();
-            input.nextLine();
-
-            switch (pilihan){
-                case 1 : manageItems();
-                    break;
-                case 2 : manageUsers();
-                    break;
-                case 0 : System.out.println("Log Out......");
-                    break;
-                    default: System.out.println("Pilihan Tidak Valid");
-                }
-            }while(pilihan != 0);
+    public boolean login(String inputUsername, String inputPassword) {
+        return this.username.equals(inputUsername) && this.password.equals(inputPassword);
     }
 
+    @Override
     public void displayInfo() {
-        System.out.println("==== Informasi com.praktikum.users.Admin ====");
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
+        System.out.println("Login Admin berhasil!\nNama: " + getNama() + "\nNIM: " + getNim());
+    }
+
+    @Override
+    public void displayAppMenu() {
+        Scanner scanner = new Scanner(System.in);
+        String pilihan;
+
+        do {
+            System.out.println("\n=== Menu Admin ===");
+            System.out.println("1. Kelola Laporan Barang");
+            System.out.println("2. Kelola Data Mahasiswa");
+            System.out.println("0. Logout");
+            System.out.print("Pilih menu: ");
+            pilihan = scanner.nextLine();
+
+            switch (pilihan) {
+                case "1":
+                    manageItems();
+                    break;
+                case "2":
+                    manageUsers();
+                    break;
+                case "0":
+                    System.out.println("Logout...");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid!");
+            }
+        } while (!pilihan.equals("0"));
     }
 
     @Override
