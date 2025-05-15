@@ -1,5 +1,7 @@
 package com.praktikum.users;
 
+import com.praktikum.main.LoginFailedException;
+
 public abstract class User {
     private String nama;
     private String nim;
@@ -27,7 +29,7 @@ public abstract class User {
 
     public abstract boolean login(String username, String password);
     public abstract void displayInfo();
-    public abstract void displayAppMenu();
+    public abstract void displayAppMenu() throws LoginFailedException;
 
     public abstract void manageItems();
 

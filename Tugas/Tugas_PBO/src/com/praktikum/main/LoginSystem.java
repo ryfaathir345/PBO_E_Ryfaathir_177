@@ -1,20 +1,35 @@
 package com.praktikum.main;
 
+import com.praktikum.data.Item;
 import com.praktikum.users.*;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LoginSystem {
-    public static void main(String[] args) {
+    public static ArrayList<User> userList = new ArrayList<>();
+    public static ArrayList<Item> reportedItems = new ArrayList<>();
+
+    public static void prosesLogin() throws LoginFailedException {
         Scanner scanner = new Scanner(System.in);
 
-        Admin admin = new Admin("Admin180", "202410370110177", "Admin177", "Password177");
-        Mahasiswa mahasiswa = new Mahasiswa("Ryfaathir", "202410370110177");
+        userList.add(new Admin("Admin177", "202410370110177", "Admin177", "Pass177"));
+        userList.add(new Admin("Admin180", "202410370110180", "Admin180", "Pass180"));
+        userList.add(new Mahasiswa("Azka", "202410370110222"));
+        userList.add(new Mahasiswa("Julian", "202410370110175"));
+
 
         System.out.println("Selamat datang di Sistem Login");
         System.out.println("1. Login sebagai Admin");
         System.out.println("2. Login sebagai Mahasiswa");
+        System.out.println("Ketik 'exit' untuk keluar dari program kapan saja.");
         System.out.print("Masukkan pilihan: ");
         String pilihan = scanner.nextLine();
+
+        if (pilihan.equalsIgnoreCase("exit")) {
+            System.out.println("Keluar dari program. Sampai jumpa!");
+            System.exit(0);
+        }
 
         User user = null;
 
@@ -24,25 +39,38 @@ public class LoginSystem {
             System.out.print("Masukkan password: ");
             String password = scanner.nextLine();
 
-            if (admin.login(username, password)) {
-                user = admin;
-            } else {
-                System.out.println("Login Admin gagal!");
+            for (User u : userList) {
+                if (u instanceof Admin a && a.login(username, password)) {
+                    user = a;
+                    break;
+                }
             }
+
+            if (user == null) throw new LoginFailedException("Login Admin gagal. Username atau password salah.");
+
         } else if (pilihan.equals("2")) {
             System.out.print("Masukkan nama: ");
             String nama = scanner.nextLine();
             System.out.print("Masukkan NIM: ");
             String nim = scanner.nextLine();
 
-            if (mahasiswa.login(nama, nim)) {
-                user = mahasiswa;
-            } else {
-                System.out.println("Login Mahasiswa gagal!");
+            if (!nama.matches("[a-zA-Z ]+")) {
+                throw new LoginFailedException("Nama hanya boleh berisi huruf dan spasi.");
             }
+
+            for (User u : userList) {
+                if (u instanceof Mahasiswa m && m.login(nama, nim)) {
+                    user = m;
+                    break;
+                }
+            }
+
+            if (user == null) throw new LoginFailedException("Login Mahasiswa gagal. Nama atau NIM salah.");
+
         } else {
-            System.out.println("Pilihan tidak valid!");
+            throw new LoginFailedException("Pilihan tidak valid. Harus 1 (Admin) atau 2 (Mahasiswa).");
         }
+
 
         if (user != null) {
             user.displayInfo();
@@ -51,4 +79,24 @@ public class LoginSystem {
 
         scanner.close();
     }
+
+
+    public static void main(String[] args) {
+        boolean berhasilLogin = false;
+
+        do {
+            try {
+                prosesLogin();
+                berhasilLogin = true;
+            } catch (LoginFailedException e) {
+                System.out.println("❌ " + e.getMessage());
+                System.out.println("Silakan coba lagi.\n");
+            } catch (Exception e) {
+                System.out.println("Terjadi kesalahan sistem: " + e.getMessage());
+                break; // keluar dari loop jika error sistem
+            }
+        } while (!berhasilLogin);
+    }
+
+
 }

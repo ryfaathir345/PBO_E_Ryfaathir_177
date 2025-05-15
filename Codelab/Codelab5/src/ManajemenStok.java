@@ -50,7 +50,7 @@ public class ManajemenStok {
                         }
                     }
                     break;
-                case 3: // Kurangi Stok Barang
+                    case 3: // Kurangi Stok Barang
                     if (daftarBarang.isEmpty()) {
                         System.out.println("Stok barang kosong.");
                         break;
