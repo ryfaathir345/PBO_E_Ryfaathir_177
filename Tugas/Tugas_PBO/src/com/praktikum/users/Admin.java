@@ -62,6 +62,34 @@ public class Admin extends User implements AdminActions {
         } while (!pilihan.equals("0"));
     }
 
+    @Override
+    public void manageItems() {
+        Scanner scanner = new Scanner(System.in);
+        int pilihan;
+
+        do {
+            System.out.println("\n=== Menu Admin: Kelola Barang ===");
+            System.out.println("1. Lihat Semua Laporan Barang");
+            System.out.println("2. Tandai Barang Telah Diambil (Claimed)");
+            System.out.println("0. Kembali");
+            System.out.print("Masukkan pilihan: ");
+
+            try {
+                pilihan = Integer.parseInt(scanner.nextLine());
+
+                switch (pilihan) {
+                    case 1 -> ViewReported();
+                    case 2 -> tandaiBarangClaimed();
+                    case 0 -> System.out.println("🔙 Kembali ke menu utama...");
+                    default -> System.out.println("❌ Pilihan tidak valid.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("⚠ Input harus berupa angka.");
+                pilihan = -1; // agar loop tetap berjalan
+            }
+        } while (pilihan != 0);
+    }
+
     private void ViewReported() {
         System.out.println("\n📋 Daftar Semua Laporan Barang:");
 
@@ -122,37 +150,6 @@ public class Admin extends User implements AdminActions {
             System.out.println("❌ Input harus berupa angka!");
         }
     }
-
-
-
-    @Override
-    public void manageItems() {
-        Scanner scanner = new Scanner(System.in);
-        int pilihan;
-
-        do {
-            System.out.println("\n=== Menu Admin: Kelola Barang ===");
-            System.out.println("1. Lihat Semua Laporan Barang");
-            System.out.println("2. Tandai Barang Telah Diambil (Claimed)");
-            System.out.println("0. Kembali");
-            System.out.print("Masukkan pilihan: ");
-
-            try {
-                pilihan = Integer.parseInt(scanner.nextLine());
-
-                switch (pilihan) {
-                    case 1 -> ViewReported();
-                    case 2 -> tandaiBarangClaimed();
-                    case 0 -> System.out.println("🔙 Kembali ke menu utama...");
-                    default -> System.out.println("❌ Pilihan tidak valid.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("⚠ Input harus berupa angka.");
-                pilihan = -1; // agar loop tetap berjalan
-            }
-        } while (pilihan != 0);
-    }
-
 
     @Override
     public void manageUsers() {

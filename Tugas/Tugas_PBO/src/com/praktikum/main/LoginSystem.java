@@ -80,7 +80,6 @@ public class LoginSystem {
         scanner.close();
     }
 
-
     public static void main(String[] args) {
         boolean berhasilLogin = false;
 
